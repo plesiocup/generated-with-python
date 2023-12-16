@@ -10,10 +10,10 @@ class Oai_create_image:
 
     def get_response(self, element):
 
-        # prompt = '' + element + '今の文章が説明文が映画の感動的なシーン' # 良さげな画像になるようにpromptの文章をそのうち考える
+        prompt = '' + element + '今の文章が説明文が映画の感動的なシーン' # 良さげな画像になるようにpromptの文章をそのうち考える
 
         response = openai.Image.create(
-            prompt = element, # そのうちpromptに差し替える
+            prompt = prompt,
             size = '1024x1024',
             n = 1
         )

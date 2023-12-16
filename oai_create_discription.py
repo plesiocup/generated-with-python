@@ -11,7 +11,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 class Oai_create_discription:
 
     def get_response(self, element):
-        message_content = "タイトルが" + element + "の映画が魅力的に思えるような説明文を想像で書いて" # 聞き方は要検討
+        message_content = 'タイトルが' + element + 'の映画が魅力的に思えるような説明文を想像で出力' # 聞き方は要検討
         message_text = [{"role":"system","content": message_content}]
 
         response = openai.ChatCompletion.create(
