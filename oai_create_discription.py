@@ -14,15 +14,20 @@ class Oai_create_discription:
         message_content = 'タイトルが' + element + 'の映画が魅力的に思えるような説明文を想像で出力' # 聞き方は要検討
         message_text = [{"role":"system","content": message_content}]
 
-        response = openai.ChatCompletion.create(
-            engine="gpt-35-turbo-16k",
-            messages = message_text,
-            temperature = 0.6,
-            max_tokens = 500,
-            top_p = 0.95,
-            frequency_penalty = 0,
-            presence_penalty = 0,
-            stop = None
-        )
+        try:
+            response = openai.ChatCompletion.create(
+                engine="gpt-35-turbo-16k",
+                messages = message_text,
+                temperature = 0.9,
+                max_tokens = 500,
+                top_p = 0.95,
+                frequency_penalty = 0,
+                presence_penalty = 0,
+                stop = None
+            )
+            return response['choices'][0]['message']['content']
         
-        return response['choices'][0]['message']['content']
+        except Exception as e:
+            print(f"Error: {e}")
+            return "error!"
+        

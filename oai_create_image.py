@@ -12,11 +12,16 @@ class Oai_create_image:
 
         prompt = '' + element + '今の文章があらすじとなる映画の感動的なシーン' # 良さげな画像になるようにpromptの文章をそのうち考える
 
-        response = openai.Image.create(
-            prompt = prompt,
-            size = '1024x1024',
-            n = 1
-        )
-        image_url = response["data"][0]["url"]
+        try:
+            response = openai.Image.create(
+                prompt = prompt,
+                size = '1024x1024',
+                n = 1
+            )
+            image_url = response["data"][0]["url"]
 
-        return image_url
+            return image_url
+        
+        except Exception as e:
+            print(f"Error: {e}")
+            return "error!"
