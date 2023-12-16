@@ -14,7 +14,7 @@ class Oai_create_image:
 
         response = openai.Image.create(
             prompt = prompt,
-            size = '1024x1024',
+            size = '1280x720',
             n = 1
         )
         image_url = response["data"][0]["url"]

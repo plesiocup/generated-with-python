@@ -17,8 +17,8 @@ class Oai_create_discription:
         response = openai.ChatCompletion.create(
             engine="gpt-35-turbo-16k",
             messages = message_text,
-            temperature = 0.7,
-            max_tokens = 800,
+            temperature = 0.4,
+            max_tokens = 250,
             top_p = 0.95,
             frequency_penalty = 0,
             presence_penalty = 0,
