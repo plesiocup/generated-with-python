@@ -3,13 +3,24 @@ from typing import List
 from pydantic import BaseModel
 
 from oai_create_image import Oai_create_image
+from oai_create_discription import Oai_create_discription
 
 app = FastAPI()
 
 image_obj = Oai_create_image()
+description_obj = Oai_create_discription()
+
+def item_remold(item):
+  item.description = create_discription(item.title)
+#   item.image_url = create_image(item.title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
+  item.image_url = create_image(item.description)
+  return item
+
+def create_discription(title):
+    description = description_obj.get_response(title)
+    return description
 
 def create_image(title):
-    # 画像を生成して画像をストレージに送って画像のリンクを返す
     image_url = image_obj.get_response(title)
     return image_url
 
@@ -31,8 +42,7 @@ async def root():
 
 @app.post("/item/")
 def create_item(item: Item):
-    item.image_url = create_image(item.title)
-    print(item.image_url)
+    item = item_remold(item)
     return item
     # return {"res": "ok",
     #         "映画id": item.movie_id, 
@@ -49,7 +59,7 @@ def create_item(item: Item):
 def create_items(items: List[Item]):
     new_items = []
     for item in items:
-        item.image_url = create_image(item.title)
+        item = item_remold(item)
         new_items.append(item)
         # new_items.append({"res": "ok",
         #                   "映画id": item.movie_id, 
@@ -61,4 +71,5 @@ def create_items(items: List[Item]):
         #                   "評価": item.evaluation,
         #                   "評価した人数": item.evaluated_count,
         #                   "公開年": item.release_year})
+    
     return new_items
