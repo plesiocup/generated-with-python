@@ -14,43 +14,43 @@ description_obj = Oai_create_discription()
 prompt_obj = Oai_create_discription()
 
 class Item(BaseModel):
-    movie_id: int # 映画id
-    image_url: str = None # 画像URL
-    title: str = "Spirited Away" # タイトル
-    description: str = None # 説明
-    category: str # 映画カテゴリ
-    play_time: int # 再生時間
-    evaluation: float # 評価
-    evaluated_count: int # 評価した人数
-    release_year: int # 公開年
+    Id: int # 映画id
+    Title: str = "Spirited Away" # タイトル
+    Description: str = None # 説明
+    Category: str # 映画カテゴリ
+    Evaluation: float # 評価
+    Playtime: int # 再生時間
+    ImageURL: str = None # 画像URL
+    ReleaseYear: int # 公開年
+    EvaluatedCount: int # 評価した人数
 
 
 def item_remold(item):
     count = 3
     while count > 0:
-        item.description = create_discription(item.title)
-        prompt = create_prompt(item.title, item.category)
+        item.Description  = create_discription(item.Title)
+        prompt = create_prompt(item.Title, item.Category)
         # print(prompt)
-        if (item.description == "error!"):
+        if (item.Description  == "error!"):
             print("ERROR (create_discription)!")
             count -= 1
         else:
-            # item.image_url = create_image(item.title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
-            item.image_url = create_image(prompt)
+            # item.ImageURL  = create_image(item.Title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
+            item.ImageURL  = create_image(prompt)
 
-            if (item.image_url == "error!"):
+            if (item.ImageURL  == "error!"):
                 print("ERROR (create_image)!")
                 count -= 1
-            elif (item.image_url == "discription error"):
+            elif (item.ImageURL  == "discription error"):
                 print("ERROR! disciption remold")
                 count -= 1
             else :
                 print("ERRORなし!!")
                 break
 
-    # item.description = create_discription(item.title)
-    # # item.image_url = create_image(item.title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
-    # item.image_url = create_image(item.description)
+    # item.Description  = create_discription(item.Title)
+    # # item.ImageURL  = create_image(item.Title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
+    # item.ImageURL  = create_image(item.Description )
 
     return item
 
