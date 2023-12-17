@@ -68,7 +68,7 @@ def create_image(element):
     return image_url
 
 def request_createData(item):
-    request_url = ""
+    request_url = "https://web-app-dev-5.azurewebsites.net/createData/"
     requests.post(request_url, data=item)
     return
 
@@ -79,7 +79,7 @@ async def root():
 @app.post("/dataRemold/")
 def create_item(item: Item):
     item = item_remold(item)
-    # request_createData(item) # /createDataにデータを投げる
+    request_createData(item) # /createDataにデータを投げる
     return item
 
 @app.post("/datasRemold/")
@@ -88,5 +88,5 @@ def create_items(items: List[Item]):
     for item in items:
         item = item_remold(item)
         new_items.append(item)
-    # request_createData(new_items) # /createDataにデータを投げる
+    request_createData(new_items) # /createDataにデータを投げる
     return new_items
