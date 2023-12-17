@@ -23,6 +23,7 @@ class Item(BaseModel):
     ImageURL: str = None # 画像URL
     ReleaseYear: int # 公開年
     EvaluatedCount: int # 評価した人数
+    MovieURL: str
 
 
 def item_remold(item):

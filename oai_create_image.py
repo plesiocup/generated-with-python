@@ -6,8 +6,6 @@ openai.api_base = "https://oai-generated.openai.azure.com/"
 openai.api_version = "2023-06-01-preview"
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-from googletrans import Translator
-
 class Oai_create_image:
 
     def get_response(self, element):
