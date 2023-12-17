@@ -24,4 +24,7 @@ class Oai_create_image:
         
         except Exception as e:  
             print(f"Error: {e}")
-            return "error!"
+            if e == "Your task failed as a result of our safety system.":
+                return "discription error"
+            else:
+                return "error!"

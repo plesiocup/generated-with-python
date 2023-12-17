@@ -14,7 +14,7 @@ class Oai_create_discription:
         # message_content = 'タイトルが' + element + 'の映画が魅力的に思えるような説明文を想像で200字程度で出力して' # 聞き方は要検討
         # message_text = [{"role":"system","content": message_content}]
 
-        message_text = [{"role":"system","content": "映画のあらすじをタイトルから想像して出力してほしい。文字数は200字程度。"},
+        message_text = [{"role":"system","content": "映画のあらすじをタイトルから想像して出力してほしい。文字数は200字程度。です、ますを使わず断定的な文で"},
                         {"role": "user", "content": "タイトル： 機動戦士ガンダム　逆襲のシャア"},
                         {"role": "assistant", "content": "アムロとシャアの13年に及ぶ宿命の対決に決着がつく、シリーズ最終章。宇宙世紀0093、シャアがネオ・ジオン総帥に就任、地球に宣戦を布告した。ブライト率いる連邦軍の独立部隊、ロンド・ベルに所属していたアムロは、最新型のνガンダムに搭乗して出撃する。アムロはシャアの野望を阻止することができるのか？"},
                         {"role": "user", "content": "タイトル： ハリー・ポッターとアズカバンの囚人 (吹替版)"},
@@ -27,7 +27,7 @@ class Oai_create_discription:
             response = openai.ChatCompletion.create(
                 engine="gpt-35-turbo-16k",
                 messages = message_text,
-                temperature = 0.9,
+                temperature = 0.6,
                 max_tokens = 500,
                 top_p = 0.95,
                 frequency_penalty = 0,
@@ -59,10 +59,7 @@ class Oai_create_discription:
                     
                     except Exception as e:
                         print(f"Error: {e}")
-                        if e == "Your task failed as a result of our safety system.":
-                             return "first"
-                        else:
-                            return "error!"
+                        return "error!"
                     
             else:
                 return response['choices'][0]['message']['content']
