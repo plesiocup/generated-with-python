@@ -26,18 +26,24 @@ class Item(BaseModel):
 
 def item_remold(item):
     count = 3
-    while count > 1:
+    while count > 0:
         item.description = create_discription(item.title)
-        # item.image_url = create_image(item.title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
-        item.image_url = create_image(item.description)
-        print(count)
-
-        if ((item.description == "error!") or (item.image_url == "error!")):
-            print("ERROR!")
+        if (item.description == "error!"):
+            print("ERROR (create_discription)!")
             count -= 1
-        else :
-            print("ERRORなし!!")
-            break
+        elif (item.description == "first!"):
+            print("ERROR!discriptionやり直し")
+            count -= 1
+        else:
+            # item.image_url = create_image(item.title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
+            item.image_url = create_image(item.description)
+
+            if (item.image_url == "error!"):
+                print("ERROR (create_image)!")
+                count -= 1
+            else :
+                print("ERRORなし!!")
+                break
 
     # item.description = create_discription(item.title)
     # # item.image_url = create_image(item.title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。

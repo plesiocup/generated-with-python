@@ -10,7 +10,7 @@ class Oai_create_image:
 
     def get_response(self, element):
 
-        prompt = '' + element + '今の文章があらすじとなる映画の感動的なシーン' # 良さげな画像になるようにpromptの文章をそのうち考える
+        prompt = element + '今のあらすじから考えられる結末' # 良さげな画像になるようにpromptの文章をそのうち考える
 
         try:
             response = openai.Image.create(
@@ -22,6 +22,6 @@ class Oai_create_image:
 
             return image_url
         
-        except Exception as e:
+        except Exception as e:  
             print(f"Error: {e}")
             return "error!"

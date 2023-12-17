@@ -11,8 +11,17 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 class Oai_create_discription:
 
     def get_response(self, element):
-        message_content = 'タイトルが' + element + 'の映画が魅力的に思えるような説明文を想像で200字程度で出力して' # 聞き方は要検討
-        message_text = [{"role":"system","content": message_content}]
+        # message_content = 'タイトルが' + element + 'の映画が魅力的に思えるような説明文を想像で200字程度で出力して' # 聞き方は要検討
+        # message_text = [{"role":"system","content": message_content}]
+
+        message_text = [{"role":"system","content": "映画のあらすじをタイトルから想像して出力してほしい。文字数は200字程度。"},
+                        {"role": "user", "content": "タイトル： 機動戦士ガンダム　逆襲のシャア"},
+                        {"role": "assistant", "content": "アムロとシャアの13年に及ぶ宿命の対決に決着がつく、シリーズ最終章。宇宙世紀0093、シャアがネオ・ジオン総帥に就任、地球に宣戦を布告した。ブライト率いる連邦軍の独立部隊、ロンド・ベルに所属していたアムロは、最新型のνガンダムに搭乗して出撃する。アムロはシャアの野望を阻止することができるのか？"},
+                        {"role": "user", "content": "タイトル： ハリー・ポッターとアズカバンの囚人 (吹替版)"},
+                        {"role": "assistant", "content": "13歳になったハリーを待ち受けるのは、不吉な死の予言さえ告げられる中、ハリーが直面する両親の死の真相。今まで見えなかったものが見え始め、わからなかったことがわかり始める第3章。"},
+                        {"role": "user", "content": "タイトル： シン・ゴジラ"},
+                        {"role": "assistant", "content": "突如現れた巨大不明生物「ゴジラ」が東京湾を襲い、政府は自衛隊を川崎に派遣して対峙。緊急事態に直面し、人智を超えるゴジラに対抗する策を模索する中、巨大生物との壮絶な戦いが始まる。"},
+                        {"role": "user", "content": "タイトル： " + element}]
 
         try:
             response = openai.ChatCompletion.create(
@@ -27,10 +36,12 @@ class Oai_create_discription:
             )
             
             response_len = len(response['choices'][0]['message']['content'])
+            print(response_len)
 
             if response_len > 250:
-                    message_content = 'タイトルが' + element + 'の映画が魅力的に思えるような説明文を想像で簡単に出力して' # 聞き方は要検討
+                    message_content = response['choices'][0]['message']['content'] + '\n上の文章を250文字以内に要約して' # 聞き方は要検討
                     message_text = [{"role":"system","content": message_content}]
+                    print("要約しなくちゃ！！！！")
 
                     try:
                         response = openai.ChatCompletion.create(
@@ -48,10 +59,12 @@ class Oai_create_discription:
                     
                     except Exception as e:
                         print(f"Error: {e}")
-                        return "error!"
+                        if e == "Your task failed as a result of our safety system.":
+                             return "first"
+                        else:
+                            return "error!"
                     
             else:
-
                 return response['choices'][0]['message']['content']
         
         except Exception as e:
