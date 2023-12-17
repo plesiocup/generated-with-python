@@ -11,6 +11,7 @@ app = FastAPI()
 
 image_obj = Oai_create_image()
 description_obj = Oai_create_discription()
+prompt_obj = Oai_create_discription()
 
 class Item(BaseModel):
     movie_id: int # 映画id
@@ -28,12 +29,14 @@ def item_remold(item):
     count = 3
     while count > 0:
         item.description = create_discription(item.title)
+        prompt = create_prompt(item.title, item.category)
+        # print(prompt)
         if (item.description == "error!"):
             print("ERROR (create_discription)!")
             count -= 1
         else:
             # item.image_url = create_image(item.title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
-            item.image_url = create_image(item.description)
+            item.image_url = create_image(prompt)
 
             if (item.image_url == "error!"):
                 print("ERROR (create_image)!")
@@ -52,11 +55,15 @@ def item_remold(item):
     return item
 
 def create_discription(title):
-    description = description_obj.get_response(title)
+    description = description_obj.get_discription_response(title)
     return description
 
-def create_image(title):
-    image_url = image_obj.get_response(title)
+def create_prompt(title, category):
+    prompt = prompt_obj.get_prompt_response(title, category)
+    return prompt
+
+def create_image(element):
+    image_url = image_obj.get_response(element)
     return image_url
 
 def request_createData(item):
