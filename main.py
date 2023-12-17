@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from typing import List
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+from time import sleep
 
 import requests
 
@@ -8,6 +10,18 @@ from oai_create_image import Oai_create_image
 from oai_create_discription import Oai_create_discription
 
 app = FastAPI()
+
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 image_obj = Oai_create_image()
 description_obj = Oai_create_discription()
@@ -24,6 +38,9 @@ class Item(BaseModel):
     ReleaseYear: int # 公開年
     EvaluatedCount: int # 評価した人数
     MovieURL: str
+    SearchId: int
+    CreatedAt: int
+    UpdatedAt: int
 
 
 def item_remold(item):
@@ -48,6 +65,7 @@ def item_remold(item):
             else :
                 print("ERRORなし!!")
                 break
+    # sleep(10)
 
     # item.Description  = create_discription(item.Title)
     # # item.ImageURL  = create_image(item.Title) # タイトルよりも生成した説明文をもとに画像を作成した方がいい気がした。
@@ -68,19 +86,20 @@ def create_image(element):
     return image_url
 
 def request_createData(item):
-    request_url = "https://web-app-dev-5.azurewebsites.net/createData/"
-    requests.post(request_url, data=item)
+    request_url = 'https://curd-app-6.azurewebsites.net/createData/'
+    res = requests.post(request_url, data=item)
+    print(res)
     return
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-@app.post("/dataRemold/")
-def create_item(item: Item):
-    item = item_remold(item)
-    request_createData(item) # /createDataにデータを投げる
-    return item
+# @app.post("/dataRemold/")
+# def create_item(item: Item):
+#     item = item_remold(item)
+#     request_createData(item) # /createDataにデータを投げる
+#     return item
 
 @app.post("/datasRemold/")
 def create_items(items: List[Item]):
@@ -88,5 +107,5 @@ def create_items(items: List[Item]):
     for item in items:
         item = item_remold(item)
         new_items.append(item)
-    request_createData(new_items) # /createDataにデータを投げる
+    # request_createData(new_items) # /createDataにデータを投げる
     return new_items
